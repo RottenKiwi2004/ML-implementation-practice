@@ -6,13 +6,13 @@ import java.util.Arrays;
 
 public class Vector implements BaseLinearAlgebraInterface {
 
-    private int n;
-    private double[] v;
+    protected int n;
+    protected double[] entries;
 
     // Always column vector with dimension N x 1
     private Vector(int n) {
         this.n = n;
-        this.v = new double[n];
+        this.entries = new double[n];
     }
 
     public static Vector zeroes(int n) {
@@ -21,14 +21,14 @@ public class Vector implements BaseLinearAlgebraInterface {
 
     public static Vector of(double[] arr) {
         Vector v = new Vector(arr.length);
-        v.v = arr;
+        v.entries = arr;
         return v;
     }
 
     public double norm(int p) {
         double sum = 0;
         for (int i=0; i<n; i++) {
-            sum += Math.pow(v[i], p);
+            sum += Math.pow(entries[i], p);
         }
         return sum;
     }
@@ -44,17 +44,25 @@ public class Vector implements BaseLinearAlgebraInterface {
 
         double sum = 0;
         for (int i=0; i<n; i++) {
-            sum += this.v[i] * v2.v[i];
+            sum += this.entries[i] * v2.entries[i];
         }
         return sum;
+    }
+
+    public Matrix transpose() {
+        Matrix t = Matrix.zeroes(1, this.n);
+        for (int i=0; i<n; i++) {
+            t.entries[0][i] = this.entries[i];
+        }
+        return t;
     }
 
     // Utils
     @Override
     public String toString() {
         return "Vector{" +
-                "n=" + n +
-                ", v=" + Arrays.toString(v) +
+                "(" + n +
+                " x 1), v=" + Arrays.toString(entries) +
                 '}';
     }
 
